@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>Hilfloser</title>
   
-  
+  <subtitle>Hilfloser</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
   <updated>2019-03-03T06:49:25.244Z</updated>
   <id>http://yoursite.com/</id>
-  
-  <author>
-    <name>John Doe</name>
-    
-  </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
