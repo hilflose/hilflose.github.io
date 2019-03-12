@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="nothing to write">
-<meta property="og:type" content="article">
+<meta name="description" content="ARM 汇编基础 Part 1：ARM汇编介绍  Part 2：数据类型寄存器  Part 3: ARM指令集  Part 4: 内存相关指令：加载以及存储  Part 5：重复性加载及存储  Part 6: 分支和条件执行  Part 7：栈以及函数    ARM&amp;amp;X86cpu的一些区别： Intel是一个CISC（Complex Instruction Set Computing，复杂">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Hilfloser">
-<meta property="og:url" content="http://yoursite.com/2019/03/03/hello-world/index.html">
+<meta property="og:url" content="http://yoursite.com/ARM汇编/1.ARM简介.html">
 <meta property="og:site_name" content="Hilfloser">
-<meta property="og:description" content="nothing to write">
+<meta property="og:description" content="ARM 汇编基础 Part 1：ARM汇编介绍  Part 2：数据类型寄存器  Part 3: ARM指令集  Part 4: 内存相关指令：加载以及存储  Part 5：重复性加载及存储  Part 6: 分支和条件执行  Part 7：栈以及函数    ARM&amp;amp;X86cpu的一些区别： Intel是一个CISC（Complex Instruction Set Computing，复杂">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-12T06:45:17.172Z">
+<meta property="og:updated_time" content="2019-03-10T10:55:50.075Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hilfloser">
-<meta name="twitter:description" content="nothing to write">
+<meta name="twitter:description" content="ARM 汇编基础 Part 1：ARM汇编介绍  Part 2：数据类型寄存器  Part 3: ARM指令集  Part 4: 内存相关指令：加载以及存储  Part 5：重复性加载及存储  Part 6: 分支和条件执行  Part 7：栈以及函数    ARM&amp;amp;X86cpu的一些区别： Intel是一个CISC（Complex Instruction Set Computing，复杂">
 
 
 
@@ -121,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/03/hello-world/">
+  <link rel="canonical" href="http://yoursite.com/ARM汇编/1.ARM简介.html">
 
 
 
@@ -242,137 +242,58 @@
 
   <div id="posts" class="posts-expand">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/03/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content>
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hilfloser">
-    </span>
-
     
+    
+    <div class="post-block page">
       <header class="post-header">
 
-        
-        
-          <h1 class="post-title" itemprop="name headline"></h1>
-        
+	<h1 class="post-title" itemprop="name headline"></h1>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T14:49:25+08:00">
-                2019-03-03
-              </time>
-            
 
-            
 
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</header>
 
       
       
-
       
+      <div class="post-body">
         
+        
+          <h1 id="ARM-汇编基础"><a href="#ARM-汇编基础" class="headerlink" title="ARM 汇编基础"></a>ARM 汇编基础</h1><ul>
+<li><p>Part 1：ARM汇编介绍</p>
+</li>
+<li><p>Part 2：数据类型寄存器</p>
+</li>
+<li><p>Part 3: ARM指令集</p>
+</li>
+<li><p>Part 4: 内存相关指令：加载以及存储</p>
+</li>
+<li><p>Part 5：重复性加载及存储</p>
+</li>
+<li><p>Part 6: 分支和条件执行</p>
+</li>
+<li><p>Part 7：栈以及函数</p>
+<hr>
+</li>
+</ul>
+<p><strong>ARM&amp;X86cpu的一些区别：</strong></p>
+<p>Intel是一个CISC（Complex Instruction Set Computing，复杂指令集）处理器。因此它具有更庞大，<strong>功能更丰富的指令集，并且允许指令进行一些复杂的访存操作。</strong>它也因此具有支持更多的复杂操作和寻址方式，并且寄存器的数量比ARM要少的多。CISC处理器一般用在通用PC，工作站和服务器中。</p>
+<p>ARM是一个RISC（Reduced Instruction Set Computing，精简指令集）处理器。因此它拥有一套精简的指令集（100个左右，甚至更少的指令）以及比CISC处理器更多的通用寄存器。与Intel处理器不同，<strong>ARM指令只处理寄存器中的数据，并使用了load/store结构访问存储器</strong>，也就是说只有load/store指令可以访问存储器。所以如果我们要增加某个内存地址中保存的值，至少需要三种类型的指令（load指令、加法指令和store指令），首先我们需要使用load指令将指定地址内存中的值加载到寄存器中，然后使用加法指令增加寄存器中的值，然后用store指令将寄存器中的值写回内存。</p>
+<p>#简单的说  ARM执行一个操作，需要的步骤更多。而x86的直接就能进行访存</p>
+<p><strong>ARM优势</strong></p>
+<p>一个重要的优势是指令可以被更快的执行（RISC处理器通过引入流水线机制，减少每个指令的占用的CPU的时钟周期来缩短执行时间）。它的劣势也很明显，较少的指令增加了软件（事实上是编译器）的复杂性。另一个重要的事实是，ARM具有两种运行模式（可以类比x86的实模式和保护模式），ARM模式和Thumb模式。</p>
+<p><em>简介剪贴自：<a href="https://azeria-labs.com/writing-arm-assembly-part-1/" target="_blank" rel="noopener">https://azeria-labs.com/writing-arm-assembly-part-1/</a></em></p>
+<p>ARM和X86的差异：<a href="https://www.cnblogs.com/bitter/p/4023176.html" target="_blank" rel="noopener">https://www.cnblogs.com/bitter/p/4023176.html</a></p>
+
+        
+      </div>
+      
+      
       
     </div>
     
     
     
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/11/ARM汇编/" rel="prev" title="ARM汇编">
-                ARM汇编 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
@@ -405,8 +326,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -421,32 +351,14 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                
-              </div>
-            
 
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">标签</span>
-                
-              </div>
             
 
           </nav>
@@ -473,6 +385,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ARM-汇编基础"><span class="nav-number">1.</span> <span class="nav-text">ARM 汇编基础</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -560,8 +488,6 @@
 
 
 
-  
-
 
 
   
@@ -592,11 +518,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script id="ribbon" type="text/javascript" size="300" alpha="0.6" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
   
 
 

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hilfloser" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="ARM汇编数据类型基础与高级语言类似，ARM也支持操作不同的数据类型。  被加载或者存储的数据类型可以是无符号（有符号）的字(words，四字节)，半字(halfwords，两字节)，或者字节(bytes)。这些数据类型在汇编语言中的扩展后缀为-h或者-sh对应着半字，-b或者-sb对应着字节，但是对于字并没有对应的扩展。无符号类型与有符号类型的差别是：  符号数据类型可以包含正负数所以数值范围上">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hilfloser">
+<meta property="og:url" content="http://yoursite.com/ARM汇编/2.ARM汇编指令.html">
+<meta property="og:site_name" content="Hilfloser">
+<meta property="og:description" content="ARM汇编数据类型基础与高级语言类似，ARM也支持操作不同的数据类型。  被加载或者存储的数据类型可以是无符号（有符号）的字(words，四字节)，半字(halfwords，两字节)，或者字节(bytes)。这些数据类型在汇编语言中的扩展后缀为-h或者-sh对应着半字，-b或者-sb对应着字节，但是对于字并没有对应的扩展。无符号类型与有符号类型的差别是：  符号数据类型可以包含正负数所以数值范围上">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/ARM汇编/pic/6189910-3cd36f359daf667c.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6189910-509c68c0dbfb1073.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/394">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6189910-cd762a9689c3da1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6189910-f2017471444cb97e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/954">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6189910-680c3708bee87309.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6189910-0396898fc1d9c10a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/954">
+<meta property="og:updated_time" content="2019-03-10T12:13:42.653Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hilfloser">
+<meta name="twitter:description" content="ARM汇编数据类型基础与高级语言类似，ARM也支持操作不同的数据类型。  被加载或者存储的数据类型可以是无符号（有符号）的字(words，四字节)，半字(halfwords，两字节)，或者字节(bytes)。这些数据类型在汇编语言中的扩展后缀为-h或者-sh对应着半字，-b或者-sb对应着字节，但是对于字并没有对应的扩展。无符号类型与有符号类型的差别是：  符号数据类型可以包含正负数所以数值范围上">
+<meta name="twitter:image" content="http://yoursite.com/ARM汇编/pic/6189910-3cd36f359daf667c.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/ARM汇编/2.ARM汇编指令.html">
+
+
+
+
+
+  <title> | Hilfloser</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hilfloser</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Hilfloser</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h4 id="ARM汇编数据类型基础"><a href="#ARM汇编数据类型基础" class="headerlink" title="ARM汇编数据类型基础"></a>ARM汇编数据类型基础</h4><p>与高级语言类似，ARM也支持操作不同的数据类型。</p>
+<p><img src=".\pic\6189910-3cd36f359daf667c.png" alt="img"></p>
+<p>被加载或者存储的数据类型可以是无符号（有符号）的字(words，四字节)，半字(halfwords，两字节)，或者字节(bytes)。这些数据类型在汇编语言中的扩展后缀为<code>-h</code>或者<code>-sh</code>对应着半字，<code>-b</code>或者<code>-sb</code>对应着字节，但是对于字并没有对应的扩展。无符号类型与有符号类型的差别是：</p>
+<ul>
+<li>符号数据类型可以包含正负数所以数值范围上更低些</li>
+<li>无符号数据类型可以放得下很大的正数但是放不了负数</li>
+</ul>
+<p>这有一些要求使用对应数据类型做存取操作的汇编指令示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ldr = 加载字，宽度四字节</span><br><span class="line">ldrh = 加载无符号的半字，宽度两字节</span><br><span class="line">ldrsh = 加载有符号的半字，宽度两字节</span><br><span class="line">ldrb = 加载无符号的字节</span><br><span class="line">ldrsb = 加载有符号的字节</span><br><span class="line"></span><br><span class="line">str = 存储字，宽度四字节</span><br><span class="line">strh = 存储无符号的半字，宽度两字节</span><br><span class="line">strsh = 存储有符号的半字，宽度两字节</span><br><span class="line">strb = 存储无符号的字节</span><br><span class="line">strsb = 存储有符号的字节</span><br></pre></td></tr></table></figure>
+<h4 id="字节序"><a href="#字节序" class="headerlink" title="字节序"></a>字节序</h4><p>在内存中有两种字节排布顺序，大端序(BE)或者小端序(LE)。两者的主要不同是对象中的每个字节在内存中的存储顺序存在差异。一般X86中是<strong>小端序，最低的字节存储在最低的地址上</strong>。在大端机中最高的字节存储在最低的地址上。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/6189910-509c68c0dbfb1073.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/394" alt="img"></p>
+<p>在版本3之前，ARM使用的是小端序，但在这之后就都是使用大端序了，但也允许切换回小端序。在我们样例代码所在的ARMv6中，指令代码是以[小端序排列对齐]。但是数据访问时采取大端序还是小端序使用程序状态寄存器(CPSR)的第9比特位来决定的。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/6189910-cd762a9689c3da1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="img"></p>
+<p>image</p>
+<h4 id="ARM寄存器"><a href="#ARM寄存器" class="headerlink" title="ARM寄存器"></a>ARM寄存器</h4><p>寄存器的数量由ARM版本决定。根据<a href="https://link.jianshu.com?t=http://infocenter.arm.com/help/topic/com.arm.doc.dui0473c/Babdfiih.html" target="_blank" rel="noopener">ARM参考手册</a>，在ARMv6-M与ARMv7-M的处理器中有30个32bit位宽度的通用寄存器。前16个寄存器是用户层可访问控制的，其他的寄存器在高权限进程中可以访问（但ARMv6-M与ARMv7-M除外）。我们仅介绍可以在任何权限模式下访问的16个寄存器。这16个寄存器分为两组：通用寄存器与有特殊含义的寄存器。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>别名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R0</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R1</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R2</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R3</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R4</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R6</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R7</td>
+<td>-</td>
+<td>一般放系统调用号</td>
+</tr>
+<tr>
+<td>R8</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R9</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R10</td>
+<td>-</td>
+<td>通用寄存器</td>
+</tr>
+<tr>
+<td>R11</td>
+<td>FP</td>
+<td>栈帧指针</td>
+</tr>
+<tr>
+<td>R12</td>
+<td>IP</td>
+<td>内部程序调用</td>
+</tr>
+<tr>
+<td>R13</td>
+<td>SP</td>
+<td>栈指针</td>
+</tr>
+<tr>
+<td>R14</td>
+<td>LR</td>
+<td>链接寄存器(一般存放函数返回地址)</td>
+</tr>
+<tr>
+<td>R15</td>
+<td>PC</td>
+<td>程序计数寄存器</td>
+</tr>
+<tr>
+<td>CPSR</td>
+<td>-</td>
+<td>当前程序状态寄存器</td>
+</tr>
+</tbody>
+</table>
+<p>下面这张表是ARM架构与寄存器与Intel架构寄存器的关系：</p>
+<table>
+<thead>
+<tr>
+<th>ARM</th>
+<th style="text-align:left">描述</th>
+<th>X86</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R0</td>
+<td style="text-align:left">通用寄存器</td>
+<td>EAX</td>
+</tr>
+<tr>
+<td>R1-R5</td>
+<td style="text-align:left">通用寄存器</td>
+<td>EBX,ECX,EDX,ESI,EDI</td>
+</tr>
+<tr>
+<td>R6-R10</td>
+<td style="text-align:left">通用寄存器</td>
+<td>-</td>
+</tr>
+<tr>
+<td>R11(FP)</td>
+<td style="text-align:left">栈帧指针</td>
+<td>EBP</td>
+</tr>
+<tr>
+<td>R12</td>
+<td style="text-align:left">内部程序调用</td>
+<td>-</td>
+</tr>
+<tr>
+<td>R13(SP)</td>
+<td style="text-align:left">栈指针</td>
+<td>ESP</td>
+</tr>
+<tr>
+<td>R14(LR)</td>
+<td style="text-align:left">链接寄存器</td>
+<td>-</td>
+</tr>
+<tr>
+<td>R14(LR)</td>
+<td style="text-align:left">&lt;-程序计数器/机器码指针-&gt;</td>
+<td>EIP</td>
+</tr>
+<tr>
+<td>CPSR</td>
+<td style="text-align:left">程序状态寄存器</td>
+<td>EFLAGS</td>
+</tr>
+</tbody>
+</table>
+<p>R0-R12：用来在通用操作中存储临时的值，指针等。R0被用来存储函数调用的返回值。R7经常被用作存储系统调用号，R11存放着帮助我们找到栈帧边界的指针（之后会讲）。以及，在ARM的函数调用约定中，前四个参数按顺序存放在R0-R3中。</p>
+<p>R13：SP(栈指针）。栈指针寄存器用来指向当前的栈顶。栈是一片来存储函数调用中相关数据的内存，在函数返回时会被修改为对应的栈指针。栈指针用来帮助在栈上申请数据空间。比如说你要申请一个字的大小，就会将栈指针减4，再将数据放入之前所指向的位置。</p>
+<p>R14：LR(链接寄存器)。当一个函数调用发生，链接寄存器就被用来记录函数调用发生所在位置的下一条指令的地址。这么做允许我们快速的从子函数返回到父函数。</p>
+<p>R15：PC(程序计数器)。程序计数器是一个在程序指令执行时自增的计数器。它的大小在ARM模式下总是4字节对齐，在Thumb模式下总是两字节对齐。当执行一个分支指令时，PC存储目的地址。在程序执行中，ARM模式下的PC存储着当前指令加8(两条ARM指令后)的位置，Thumb(v1)模式下的PC存储着当前指令加4(两条Thumb指令后)的位置。这也是X86与ARM在PC上的主要不同之处。</p>
+<p>我们可以通过调试来观察PC的行为。我们的程序中将PC的值存到R0中同时包含了两条其他指令，来看看会发生什么。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.section .text</span><br><span class="line">.global _start</span><br><span class="line"></span><br><span class="line">_start:</span><br><span class="line"> mov r0, pc</span><br><span class="line"> mov r1, #2</span><br><span class="line"> add r2, r1, r1</span><br><span class="line"> bkpt</span><br></pre></td></tr></table></figure>
+<p>在GDB中，我们开始调试这段汇编代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">gef&gt;</span><span class="bash"> br _start</span></span><br><span class="line">Breakpoint 1 at 0x8054</span><br><span class="line"><span class="meta">gef&gt;</span><span class="bash"> run</span></span><br></pre></td></tr></table></figure>
+<p>在开始执行触发断点后，首先会在GDB中看到:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$r0 0x00000000   $r1 0x00000000   $r2 0x00000000   $r3 0x00000000 </span><br><span class="line">$r4 0x00000000   $r5 0x00000000   $r6 0x00000000   $r7 0x00000000 </span><br><span class="line">$r8 0x00000000   $r9 0x00000000   $r10 0x00000000  $r11 0x00000000 </span><br><span class="line">$r12 0x00000000  $sp 0xbefff7e0   $lr 0x00000000   $pc 0x00008054 </span><br><span class="line">$cpsr 0x00000010 </span><br><span class="line"></span><br><span class="line">0x8054 &lt;_start&gt; mov r0, pc     &lt;- $pc</span><br><span class="line">0x8058 &lt;_start+4&gt; mov r0, #2</span><br><span class="line">0x805c &lt;_start+8&gt; add r1, r0, r0</span><br><span class="line">0x8060 &lt;_start+12&gt; bkpt 0x0000</span><br><span class="line">0x8064 andeq r1, r0, r1, asr #10</span><br><span class="line">0x8068 cmnvs r5, r0, lsl #2</span><br><span class="line">0x806c tsteq r0, r2, ror #18</span><br><span class="line">0x8070 andeq r0, r0, r11</span><br><span class="line">0x8074 tsteq r8, r6, lsl #6</span><br></pre></td></tr></table></figure>
+<p>可以看到在程序的开始PC指向0x8054这个位置即第一条要被执行的指令，那么此时我们使用GDB命令si，执行下一条机器码。下一条指令是把PC的值放到R0寄存器中，所以应该是0x8054么？来看看调试器的结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$r0 0x0000805c   $r1 0x00000000   $r2 0x00000000   $r3 0x00000000 </span><br><span class="line">$r4 0x00000000   $r5 0x00000000   $r6 0x00000000   $r7 0x00000000 </span><br><span class="line">$r8 0x00000000   $r9 0x00000000   $r10 0x00000000  $r11 0x00000000 </span><br><span class="line">$r12 0x00000000  $sp 0xbefff7e0   $lr 0x00000000   $pc 0x00008058 </span><br><span class="line">$cpsr 0x00000010</span><br><span class="line"></span><br><span class="line">0x8058 &lt;_start+4&gt; mov r0, #2       &lt;- $pc</span><br><span class="line">0x805c &lt;_start+8&gt; add r1, r0, r0</span><br><span class="line">0x8060 &lt;_start+12&gt; bkpt 0x0000</span><br><span class="line">0x8064 andeq r1, r0, r1, asr #10</span><br><span class="line">0x8068 cmnvs r5, r0, lsl #2</span><br><span class="line">0x806c tsteq r0, r2, ror #18</span><br><span class="line">0x8070 andeq r0, r0, r11</span><br><span class="line">0x8074 tsteq r8, r6, lsl #6</span><br><span class="line">0x8078 adfcssp f0, f0, #4.0</span><br></pre></td></tr></table></figure>
+<p>当然不是，在执行0x8054这条位置的机器码时，PC已经读到了两条指令后的位置也就是0x805c(见R0寄存器)。所以我们以为直接读取PC寄存器的值时，它指向的是下一条指令的位置。但是调试器告诉我们，PC指向当前指令向后两条机器码的位置。这是因为早期的ARM处理器总是会先获取当前位置后两条的机器码。这么做的原因也是确保与早期处理器的兼容性。</p>
+<h4 id="当前程序状态寄存器（CPSR）"><a href="#当前程序状态寄存器（CPSR）" class="headerlink" title="当前程序状态寄存器（CPSR）"></a>当前程序状态寄存器（CPSR）</h4><p>当你用GDB调试ARM程序的的时候你能会可以看见Flags这一栏（GDB配置插件GEF后就可以看见了，或者直接在GDB里面输入flags也可以）。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/6189910-f2017471444cb97e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/954" alt="img"></p>
+<p>image</p>
+<p>图中寄存器<code>$CSPR</code>显示了当前状态寄存器的值，Flags里面出现的thumb，fast，interrupt，overflow，carry，zero，negative就是来源于CSPR寄存器中对应比特位的值。ARM架构的N，Z，C，V与X86架构EFLAG中的SF，ZF，CF，OF相对应。这些比特位在汇编级别的条件执行或者循环的跳出时，被用作判断的依据。</p>
+<p><em>CF</em>是进位标志;PF是奇偶标志;AF是辅助进位标志;<em>ZF</em>是零标志;<em>SF</em>是符号标志;<em>OF</em>是溢出标志。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/6189910-680c3708bee87309.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="img"></p>
+<p>上图展示了32位的CPSR寄存器的比特位含义，左边是最大比特位，右边是最小比特位。每个单元代表一个比特。这一个个比特的含义都很丰富：</p>
+<table>
+<thead>
+<tr>
+<th>标记</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N(Negative)</td>
+<td>指令结果为负值时置1</td>
+</tr>
+<tr>
+<td>Z(Zero)</td>
+<td>指令结果为零值时置1</td>
+</tr>
+<tr>
+<td>C(Carry)</td>
+<td>对于加法有进位则置1，对于减法有借位则置0</td>
+</tr>
+<tr>
+<td>V(Overflow)</td>
+<td>指令结果不能用32位的二进制补码存储，即发生了溢出时置1</td>
+</tr>
+<tr>
+<td>E(Endian)</td>
+<td>小端序置0，大端序置1</td>
+</tr>
+<tr>
+<td>T(Thumb)</td>
+<td>当为Thumb模式时置1，ARM模式置0</td>
+</tr>
+<tr>
+<td>M(Mode)</td>
+<td>当前的权限模式（用户态，内核态）</td>
+</tr>
+<tr>
+<td>J(Jazelle)</td>
+<td>允许ARM处理器去以硬件执行java字节码的状态标示</td>
+</tr>
+</tbody>
+</table>
+<p>假设我们用CMP指令去比较1和2，结果会是一个负数因为1-2=-1。然而当我们反过来用2和1比较，C位将被设定，因为在一个较大的数上减了较小的数，没有发生借位。当我们比较两个相同的数比如2和2时，由于结果是0，Z标志位将被置一。注意CMP指令中被使用的寄存器的值并不会被修改，其计算结果仅仅影响到CPSR寄存器中的状态位。</p>
+<p>在开了GEF插件的GDB中，计算结果如下图：在这里我们比较的两个寄存器是R1和R0，所以执行后的flag状态如下图。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/6189910-0396898fc1d9c10a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/954" alt="img"></p>
+<p>Carry位Flag被设置的原因是CMP R1,R0会去拿4和2做比较。因为我们用以个较大的数字去减一个较少的数字，没有发生借位。Carry位便被置1。相反的，如果是CMP R0,R1那么Negative位会被置一。</p>
+<p>原作链接：<a href="https://www.jianshu.com/p/a28638589d55" target="_blank" rel="noopener">https://www.jianshu.com/p/a28638589d55</a></p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">nothing to write</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ARM汇编数据类型基础"><span class="nav-number">1.</span> <span class="nav-text">ARM汇编数据类型基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字节序"><span class="nav-number">2.</span> <span class="nav-text">字节序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ARM寄存器"><span class="nav-number">3.</span> <span class="nav-text">ARM寄存器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当前程序状态寄存器（CPSR）"><span class="nav-number">4.</span> <span class="nav-text">当前程序状态寄存器（CPSR）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
